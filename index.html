@@ -1,116 +1,185 @@
-<!-- index.html -->
-<!doctype html>
-<html class="no-js" lang="en">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mosa Moleleki | Portfolio</title>
-  <link rel="stylesheet" href="css/style.css">
-  <meta name="description" content="Personal portfolio showcasing my projects and skills as a developer">
-
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Mosa Moleleki | Portfolio">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourusername.github.io">
-  <meta property="og:image" content="img/portfolio-preview.jpg">
-  <meta property="og:image:alt" content="Portfolio website preview">
-
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.png">
-
-  <link rel="manifest" href="site.webmanifest">
-  <meta name="theme-color" content="#000000">
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional portfolio showcasing projects, skills, and contact information.">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/app.js" defer></script>
 </head>
-
 <body>
-<!-- Header & Navigation -->
-<header>
-  <div class="container">
-    <nav class="navbar">
-      <div class="logo">
-        <a href="#home">Shoez's<span>Portfolio</span></a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#home" class="active">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <div class="menu-btn">
-        <i class="fas fa-bars"></i>
-      </div>
-    </nav>
-  </div>
-</header>
-
-<!-- Neon Intro Screen -->
-<section id="intro" class="intro-screen">
-  <div class="intro-content">
-    <h1 class="neon-text">Welcome to My World</h1>
-  </div>
-</section>
-
-<!-- Hero / Home Section -->
-<section id="home" class="hero split-hero">
-  <div class="container split-container">
-    <!-- Left: Profile with neon orbit -->
-    <div class="left-side profile-orbit">
-      <div class="pic-wrapper">
-        <img src="img/profile.jpg" alt="Mosa Moleleki" class="profile-pic">
-        <div class="orbit-dot"></div>
-      </div>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loading-container">
+            <div class="loading-text">
+                <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span>
+            </div>
+            <div class="loading-bar"></div>
+        </div>
     </div>
-    <!-- Right: Animated intro text -->
-    <div class="right-side hero-content">
-      <h1 class="intro-name">Hi, I'm <span class="highlight">Mosa Moleleki</span></h1>
-      <p class="intro-role">I'm a <span id="role-word">Software Developer</span></p>
-      <p class="intro-bg">I am an aspiring software developer who is currently studying at Rosebank College and I’m pursuing a diploma in software development.</p>
-      <div class="hero-buttons">
-        <a href="#projects" class="btn btn-primary">View My Work</a>
-      </div>
+
+    <!-- Neon Intro Screen -->
+    <div id="intro" class="intro-screen">
+        <h1>Welcome to My Portfolio</h1>
     </div>
-  </div>
-</section>
 
-<!-- About Me Section -->
-<section id="about" class="about">
-  <!-- … your existing About markup … -->
-</section>
+    <!-- 3D Background Canvas -->
+    <canvas id="background-canvas"></canvas>
 
-<!-- Skills Section -->
-<section id="skills" class="skills">
-  <!-- … your existing Skills markup … -->
-</section>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<!-- Projects Section -->
-<section id="projects" class="projects">
-  <!-- … your existing Projects markup … -->
-</section>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Hi, I'm <span>Mosa Moleleki</span></h1>
+            <p id="role-word">Software Developer</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+    </section>
 
-<!-- Contact Section -->
-<section id="contact" class="contact">
-  <!-- … your existing Contact markup … -->
-</section>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About <span>Me</span></h2>
+            <p class="about-text">
+                I am a passionate software developer with a background in design. I specialize in creating user-friendly applications and solving complex problems.
+            </p>
+        </div>
+    </section>
 
-<!-- Footer -->
-<footer>
-  <div class="container">
-    <p>&copy; 2025 Mosa Moleleki. All Rights Reserved.</p>
-    <div class="back-to-top">
-      <a href="#home"><i class="fas fa-arrow-up"></i></a>
-    </div>
-  </div>
-</footer>
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">My <span>Skills</span></h2>
+            <!-- Add category tabs -->
+            <div class="skills-tabs">
+                <div class="category active" data-category="technical">Technical</div>
+                <div class="category" data-category="design">Design</div>
+                <div class="category" data-category="soft">Soft Skills</div>
+            </div>
+            <div class="skills-container technical-skills active">
+                <div class="skill">
+                    <p>JavaScript</p>
+                    <div class="skill-bar" data-level="90%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+                <div class="skill">
+                    <p>HTML & CSS</p>
+                    <div class="skill-bar" data-level="85%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+                <div class="skill">
+                    <p>React</p>
+                    <div class="skill-bar" data-level="80%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="skills-container design-skills">
+                <div class="skill">
+                    <p>Figma</p>
+                    <div class="skill-bar" data-level="75%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+                <div class="skill">
+                    <p>Adobe XD</p>
+                    <div class="skill-bar" data-level="70%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="skills-container soft-skills">
+                <div class="skill">
+                    <p>Problem Solving</p>
+                    <div class="skill-bar" data-level="90%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+                <div class="skill">
+                    <p>Communication</p>
+                    <div class="skill-bar" data-level="85%">
+                        <div class="skill-level"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script src="js/app.js"></script>
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">My <span>Projects</span></h2>
+            <!-- Add filter buttons -->
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+            </div>
+            <div class="project-grid">
+                <div class="project-card" data-category="web">
+                    <img src="img/project1.jpg" alt="Project 1">
+                    <h3>Project 1</h3>
+                    <p>A web application built with React and Node.js.</p>
+                </div>
+                <div class="project-card" data-category="design">
+                    <img src="img/project2.jpg" alt="Project 2">
+                    <h3>Project 2</h3>
+                    <p>A creative design project using Figma and Adobe XD.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get in <span>Touch</span></h2>
+            <form id="contact-form">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <textarea id="message" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Mosa Moleleki. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/yourusername" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="back-to-top">
+                <a href="#home"><i class="fas fa-arrow-up"></i></a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
