@@ -12,6 +12,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/app.js" defer></script>
+<!-- Add this to your head section in index.html -->
+<style>
+  /* Improved Akatsuki Logo Styling */
+  .akatsuki-logo img {
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(220, 20, 60, 0.8), 0 0 40px rgba(220, 20, 60, 0.4);
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.7));
+  }
+  
+  /* Header logo enhancement */
+  .logo img {
+    border-radius: 50%;
+    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.6));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  
+  .logo:hover img {
+    transform: rotate(15deg);
+    filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.9));
+  }
+  
+  /* Custom animation for the logo mask */
+  @keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(220, 20, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 20, 60, 0); }
+  }
+</style>
 </head>
 <body>
     <!-- Three.js Background Canvas -->
@@ -20,12 +49,11 @@
     <!-- Loader -->
     <div id="loader">
         <div class="akatsuki-loader">
-            <!-- Remove the SVG ring -->
             <div class="akatsuki-logo">
                 <img src="images/akatsuki-front-logo.jpg" alt="Akatsuki Logo">
-                <div class="logo-mask" id="logo-mask"></div>
+                <!-- Removed logo mask -->
             </div>
-            <div class="loading-percentage">0%</div>
+            <!-- Removed loading percentage -->
         </div>
     </div>
     
@@ -44,7 +72,7 @@
                 <!-- In the header section -->
                 <div class="logo">
                     <a href="#home">
-                        <img src="images/akatsuki-front-logo.jpg" alt="Akatsuki Logo" width="40">
+                        <img src="images/akatsuki-front-logo.jpg" alt="Akatsuki Logo" width="50">
                         <span>Portfolio</span>
                     </a>
                 </div>
@@ -350,16 +378,16 @@
                 <div class="contact-form reveal">
                     <form id="contact-form">
                         <div class="form-group">
-                            <input type="text" id="name" placeholder="Your Name" required>
+                            <label for="name"></label><input type="text" id="name" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" id="email" placeholder="Your Email" required>
+                            <label for="email"></label><input type="email" id="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="subject" placeholder="Subject" required>
+                            <label for="subject"></label><input type="text" id="subject" placeholder="Subject" required>
                         </div>
                         <div class="form-group">
-                            <textarea id="message" placeholder="Your Message" required></textarea>
+                            <label for="message"></label><textarea id="message" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             <span>Send Message</span>

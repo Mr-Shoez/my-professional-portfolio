@@ -1,7 +1,9 @@
-/* css/style.css */
-/* ————————————————————————————————
-   Variables & Reset - Akatsuki Theme
-   ———————————————————————————————— */
+css,
+css,
+    /* css/style.css */
+    /* ————————————————————————————————
+       Variables & Reset - Akatsuki Theme
+       ———————————————————————————————— */
 :root {
     --primary-color: #ff0000;         /* Akatsuki red */
     --primary-color-dark: #cc0000;    /* darker red for hover states */
@@ -116,45 +118,185 @@ img { max-width: 100%; display: block; }
     filter: drop-shadow(0 0 5px var(--akatsuki-red));
 }
 
+/* Enhanced professional Akatsuki logo styling */
 .akatsuki-logo {
-    width: 200px;
-    height: 200px;
     position: relative;
-    overflow: hidden;
-    z-index: 2;
+    width: 170px;
+    height: 170px;
+    margin: 0 auto;
     border-radius: 50%;
-    box-shadow: 0 0 15px rgba(220, 20, 60, 0.7);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(220, 20, 60, 0.5);
+    animation: logo-reveal 1.5s ease-in-out forwards;
 }
 
 .akatsuki-logo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    filter: drop-shadow(0 0 8px rgba(220, 20, 60, 0.7));
-    opacity: 0.8; /* Slightly reduce opacity instead of using mix-blend-mode */
+    object-fit: contain;
+    object-position: center;
+    border-radius: 50%;
+    transition: all 0.8s ease;
+    filter: contrast(1.1) brightness(1.05);
 }
 
-/* Create a mask for the image that will reveal it as loading progresses */
+/* Professional reveal animation */
+@keyframes logo-reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        box-shadow: 0 0 0 rgba(220, 20, 60, 0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(220, 20, 60, 0.8);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(220, 20, 60, 0.6), 0 0 40px rgba(220, 20, 60, 0.3);
+    }
+}
+
+/* Professional elegant red lines animation */
+.akatsuki-logo::before, 
+.akatsuki-logo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: transparent;
+    border: 1px solid var(--akatsuki-red);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.akatsuki-logo::before {
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    transform: translate(-50%, -50%) scale(0.5);
+    animation: red-ripple 2s ease-out infinite;
+    animation-delay: 0.5s;
+}
+
+.akatsuki-logo::after {
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    transform: translate(-50%, -50%) scale(0.5);
+    animation: red-ripple 2s ease-out infinite;
+    animation-delay: 1s;
+}
+
+@keyframes red-ripple {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* Professional sheen animation */
+.akatsuki-logo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    transform: rotate(30deg);
+    animation: sheen 3s ease-in-out infinite;
+}
+
+@keyframes sheen {
+    0% {
+        transform: rotate(30deg) translateX(-100%);
+    }
+    15%, 100% {
+        transform: rotate(30deg) translateX(100%);
+    }
+}
+
 .logo-mask {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Start at 100% (fully covering) */
-    background-color: rgba(0, 0, 0, 0.9); /* Dark overlay */
-    transition: height 0.2s ease;
-    z-index: 3;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: height 0.2s ease-out, box-shadow 0.3s ease;
+}
+
+/* Flash effect for logo completion */
+.logo-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+    animation: flash 0.5s ease-out forwards;
+}
+
+@keyframes flash {
+    0% { opacity: 0.8; }
+    100% { opacity: 0; }
 }
 
 .loading-percentage {
-    position: absolute;
-    bottom: -40px;
-    color: var(--akatsuki-red);
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(220, 20, 60, 0.7);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #dc143c;
+    margin-top: 1rem;
+    text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+    animation: pulse-red 2s infinite;
 }
+
+/* Pulsing effect for loading text */
+@keyframes pulse-red {
+    0% { text-shadow: 0 0 5px rgba(220, 20, 60, 0.3); }
+    50% { text-shadow: 0 0 15px rgba(220, 20, 60, 0.8), 0 0 30px rgba(220, 20, 60, 0.4); }
+    100% { text-shadow: 0 0 5px rgba(220, 20, 60, 0.3); }
+}
+
+/* Create a mask for the image that will reveal it as loading progresses */
+/*.logo-mask {*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%; *//* Start at 100% (fully covering) */
+/*    background-color: rgba(0, 0, 0, 0.9); *//* Dark overlay */
+/*    transition: height 0.2s ease;*/
+/*    z-index: 3;*/
+/*}*/
+
+/*.loading-percentage {*/
+/*    position: absolute;*/
+/*    bottom: -40px;*/
+/*    color: var(--akatsuki-red);*/
+/*    font-size: 2rem;*/
+/*    font-weight: 700;*/
+/*    letter-spacing: 1px;*/
+/*    text-shadow: 0 0 8px rgba(220, 20, 60, 0.7);*/
+/*}*/
 
 /* ————————————————————————————————
    Intro Screen - Akatsuki Quote
@@ -702,21 +844,24 @@ nav {
 .logo a {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    transition: var(--transition);
-}
-
-.logo a:hover {
-    color: var(--akatsuki-red);
+    text-decoration: none;
+    color: #fff;
 }
 
 .logo img {
-    width: 4rem;
-    height: auto;
-    filter: drop-shadow(0 0 5px rgba(220, 20, 60, 0.6));
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.logo span {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.logo:hover span {
+    color: #dc143c;
 }
 
 .nav-links {
@@ -926,208 +1071,5 @@ nav {
 .image-frame img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-
-.frame-border {
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    border: 2px solid var(--akatsuki-red);
-    border-radius: 50%;
-    animation: rotate 30s linear infinite;
-}
-
-/* ————————————————————————————————
-   Skills Section
-   ———————————————————————————————— */
-.skill {
-    width: calc(33.333% - 2rem);
-    background: var(--light-gray);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-    min-width: 25rem;
-}
-
-.skill:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--box-shadow);
-}
-
-.skill p {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    font-weight: 500;
-}
-
-.skill p::after {
-    content: attr(data-level);
-    color: var(--akatsuki-red);
-}
-
-.skill-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.skill-level {
-    height: 100%;
-    background: var(--akatsuki-red);
-    width: 0; /* Will be set by JS */
-    transition: width 1s ease;
-}
-
-/* ————————————————————————————————
-   Projects Section
-   ———————————————————————————————— */
-.project-filters {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 4rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.filter-btn {
-    padding: 1rem 2.5rem;
-    background: var(--light-gray);
-    border: none;
-    border-radius: var(--border-radius);
-    color: var(--text-color);
-    font-size: 1.6rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-    background: var(--akatsuki-red);
-    color: #fff;
-    box-shadow: var(--glow-shadow);
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(35rem, 1fr));
-    gap: 3rem;
-}
-
-.project-card {
-    position: relative;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-}
-
-.project-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--glow-shadow);
-}
-
-.project-card img {
-    width: 100%;
-    height: 25rem;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.project-card:hover img {
-    transform: scale(1.05);
-}
-
-.project-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 2rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-    transform: translateY(0);
-    transition: var(--transition);
-}
-
-.project-card:hover .project-content {
-    transform: translateY(-10px);
-}
-
-.project-content h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: #fff;
-}
-
-.project-content p {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
-}
-
-.project-links {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.project-link {
-    font-size: 1.4rem;
-    color: var(--akatsuki-red);
-    transition: var(--transition);
-}
-
-.project-link:hover {
-    color: #fff;
-    text-shadow: 0 0 5px var(--akatsuki-red);
-}
-
-/* ————————————————————————————————
-   Contact Section
-   ———————————————————————————————— */
-.contact-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 5rem;
-}
-
-.contact-info {
-    flex: 1;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 3rem;
-    background: var(--light-gray);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.contact-item:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--box-shadow);
-}
-
-.contact-item i {
-    font-size: 2.5rem;
-    width: 5rem;
-    height: 5rem;
-    background: var(--akatsuki-red);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin-right: 2rem;
-    box-shadow: var(--glow-shadow);
-}
-
-.contact-item h3 {
-
+    object-fit: cover; /* or another appropriate value like 'contain', 'fill', etc. */
 }

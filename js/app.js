@@ -4,59 +4,128 @@ document.addEventListener('DOMContentLoaded', function() {
     initAkatsukiBackground();
     createAkatsukiClouds();
     
+    // Replace the existing loader code in app.js with this improved version
+    // Modified loader code for app.js
     // Loader Animation with Akatsuki Emblem
-    const loader = document.getElementById('loader');
-    const logoMask = document.getElementById('logo-mask');
-    const loadingPercentage = document.querySelector('.loading-percentage');
+    // Professional loader animation with Akatsuki Emblem
+const loader = document.getElementById('loader');
 
-    if (loader && logoMask && loadingPercentage) {
-        let progress = 0;
+if (loader) {
+    // Wait for content to load
+    window.addEventListener('load', () => {
+        // Apply subtle shadow pulse animation to the logo
+        const logoElement = document.querySelector('.akatsuki-logo img');
         
-        // Simulate loading progress
-        const interval = setInterval(() => {
-            progress += Math.random() * 2; // Random increment for more natural loading
-            
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                
-                // Show intro screen with quote
-                setTimeout(() => {
-                    loader.style.transition = 'opacity 0.8s ease';
-                    loader.style.opacity = '0';
-                    
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                        
-                        // Show the quote
-                        const intro = document.getElementById('intro');
-                        const quoteContainer = document.querySelector('.quote-container');
-                        
-                        if (intro && quoteContainer) {
-                            quoteContainer.classList.add('show');
-                            
-                            // After showing the quote, fade it out
-                            setTimeout(() => {
-                                intro.style.transition = 'opacity 1s ease';
-                                intro.style.opacity = '0';
-                                
-                                setTimeout(() => {
-                                    intro.style.display = 'none';
-                                    document.body.style.overflow = 'visible'; // Enable scrolling
-                                }, 1000);
-                            }, 4000); // Show quote for 4 seconds
-                        }
-                    }, 800);
-                }, 500); // Small delay after reaching 100%
+        // Elegant shimmer effect
+        setTimeout(() => {
+            if (logoElement) {
+                logoElement.style.filter = 'contrast(1.2) brightness(1.2) drop-shadow(0 0 15px rgba(220, 20, 60, 0.9))';
             }
             
-            // Update the progress by revealing the image from bottom to top
-            logoMask.style.height = `${100 - progress}%`;
-            loadingPercentage.textContent = `${Math.round(progress)}%`;
-        }, 50);
+            // Create a subtle professional particle animation around the logo
+            createParticleEffect();
+            
+            // Fade out loader after professional animation
+            setTimeout(() => {
+                loader.style.transition = 'opacity 1.2s ease';
+                loader.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    
+                    // Show the quote
+                    const intro = document.getElementById('intro');
+                    const quoteContainer = document.querySelector('.quote-container');
+                    
+                    if (intro && quoteContainer) {
+                        quoteContainer.classList.add('show');
+                        
+                        // After showing the quote, fade it out
+                        setTimeout(() => {
+                            intro.style.transition = 'opacity 1s ease';
+                            intro.style.opacity = '0';
+                            
+                            setTimeout(() => {
+                                intro.style.display = 'none';
+                                document.body.style.overflow = 'visible'; // Enable scrolling
+                            }, 1000);
+                        }, 4000); // Show quote for 4 seconds
+                    }
+                }, 1200);
+            }, 2000); // Show the logo animation for 2 seconds
+        }, 500);
+    });
+    
+    // Create professional particle effect
+    function createParticleEffect() {
+        const logo = document.querySelector('.akatsuki-logo');
+        if (!logo) return;
+        
+        const logoRect = logo.getBoundingClientRect();
+        const centerX = logoRect.left + logoRect.width / 2;
+        const centerY = logoRect.top + logoRect.height / 2;
+        
+        // Create particles
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'logo-particle';
+            particle.style.position = 'absolute';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.backgroundColor = 'rgba(220, 20, 60, 0.7)';
+            particle.style.borderRadius = '50%';
+            particle.style.zIndex = '1999';
+            
+            // Random angle and distance from center
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 70 + Math.random() * 30;
+            
+            // Calculate position
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+            
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            
+            // Add subtle animation
+            const duration = 1 + Math.random() * 2;
+            const delay = Math.random() * 1.5;
+            
+            particle.style.animation = `
+                particle-fade ${duration}s ease-in-out ${delay}s infinite alternate,
+                particle-move ${duration * 1.5}s ease-in-out ${delay}s infinite alternate
+            `;
+            
+            document.body.appendChild(particle);
+            
+            // Clean up particles when loader is gone
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 4000);
+        }
     }
+}
 
-    // Mobile Menu Toggle with advanced animation
+// Add keyframes for particles
+const style = document.createElement('style');
+style.innerHTML = `
+    @keyframes particle-fade {
+        0% { opacity: 0; }
+        30% { opacity: 0.8; }
+        70% { opacity: 0.6; }
+        100% { opacity: 0; }
+    }
+    
+    @keyframes particle-move {
+        0% { transform: translateY(0) scale(0.8); }
+        50% { transform: translateY(-15px) scale(1); }
+        100% { transform: translateY(5px) scale(0.6); }
+    }
+`;
+document.head.appendChild(style);
+
     const menuBtn = document.querySelector('.menu-btn');
     const navLinks = document.querySelector('.nav-links');
     if (menuBtn && navLinks) {
