@@ -6,12 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Loader Animation with Akatsuki Emblem
     const loader = document.getElementById('loader');
-    const ringProgress = document.querySelector('.ring-progress');
+    const logoMask = document.getElementById('logo-mask');
     const loadingPercentage = document.querySelector('.loading-percentage');
-    
-    if (loader && ringProgress && loadingPercentage) {
+
+    if (loader && logoMask && loadingPercentage) {
         let progress = 0;
-        const circumference = 2 * Math.PI * 45; // 45 is the circle radius
         
         // Simulate loading progress
         const interval = setInterval(() => {
@@ -51,9 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 500); // Small delay after reaching 100%
             }
             
-            // Update the progress ring
-            const dashoffset = circumference - (progress / 100) * circumference;
-            ringProgress.style.strokeDashoffset = dashoffset;
+            // Update the progress by revealing the image from bottom to top
+            logoMask.style.height = `${100 - progress}%`;
             loadingPercentage.textContent = `${Math.round(progress)}%`;
         }, 50);
     }
