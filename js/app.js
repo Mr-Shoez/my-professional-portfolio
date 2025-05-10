@@ -1,32 +1,81 @@
 // Wait for DOM to fully load
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize 3D Background
-    initThreeJSBackground();
-
-    // Loader Animation
+    // Initialize Akatsuki-themed Background
+    initAkatsukiBackground();
+    createAkatsukiClouds();
+    
+    // Loader Animation with Akatsuki Emblem
     const loader = document.getElementById('loader');
-    if (loader) {
-        window.addEventListener('load', () => {
-            loader.style.transition = 'opacity 0.5s ease';
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                document.body.style.overflow = 'visible'; // Enable scrolling
-            }, 500);
-        });
+    const ringProgress = document.querySelector('.ring-progress');
+    const loadingPercentage = document.querySelector('.loading-percentage');
+    
+    if (loader && ringProgress && loadingPercentage) {
+        let progress = 0;
+        const circumference = 2 * Math.PI * 45; // 45 is the circle radius
+        
+        // Simulate loading progress
+        const interval = setInterval(() => {
+            progress += Math.random() * 2; // Random increment for more natural loading
+            
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Show intro screen with quote
+                setTimeout(() => {
+                    loader.style.transition = 'opacity 0.8s ease';
+                    loader.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        
+                        // Show the quote
+                        const intro = document.getElementById('intro');
+                        const quoteContainer = document.querySelector('.quote-container');
+                        
+                        if (intro && quoteContainer) {
+                            quoteContainer.classList.add('show');
+                            
+                            // After showing the quote, fade it out
+                            setTimeout(() => {
+                                intro.style.transition = 'opacity 1s ease';
+                                intro.style.opacity = '0';
+                                
+                                setTimeout(() => {
+                                    intro.style.display = 'none';
+                                    document.body.style.overflow = 'visible'; // Enable scrolling
+                                }, 1000);
+                            }, 4000); // Show quote for 4 seconds
+                        }
+                    }, 800);
+                }, 500); // Small delay after reaching 100%
+            }
+            
+            // Update the progress ring
+            const dashoffset = circumference - (progress / 100) * circumference;
+            ringProgress.style.strokeDashoffset = dashoffset;
+            loadingPercentage.textContent = `${Math.round(progress)}%`;
+        }, 50);
     }
 
-    // Mobile Menu Toggle
+    // Mobile Menu Toggle with advanced animation
     const menuBtn = document.querySelector('.menu-btn');
     const navLinks = document.querySelector('.nav-links');
     if (menuBtn && navLinks) {
         menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
             navLinks.classList.toggle('active');
-            const icon = menuBtn.querySelector('i');
-            if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
-            }
+            
+            // Reset and apply animation delays to list items
+            const navItems = navLinks.querySelectorAll('li');
+            navItems.forEach((item, index) => {
+                item.style.setProperty('--i', index);
+                if (navLinks.classList.contains('active')) {
+                    item.style.transitionDelay = `${0.1 * index}s`;
+                } else {
+                    item.style.transitionDelay = `${0.1 * (navItems.length - index - 1)}s`;
+                }
+            });
         });
     }
 
@@ -36,15 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
             !e.target.closest('.nav-links') &&
             !e.target.closest('.menu-btn')) {
             navLinks.classList.remove('active');
-            const icon = menuBtn.querySelector('i');
-            if (icon) {
-                icon.classList.add('fa-bars');
-                icon.classList.remove('fa-times');
-            }
+            if (menuBtn) menuBtn.classList.remove('active');
         }
     });
 
-    // Header scroll effect
+    // Header scroll effect with glow
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
@@ -120,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Skills Tab Functionality
+    // Skills Tab Functionality with Akatsuki red indicator
     const skillCategories = document.querySelectorAll('.category');
     const skillContainers = document.querySelectorAll('.skills-container');
 
@@ -143,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Animate skill bars on scroll
+    // Animate skill bars on scroll with Akatsuki effect
     const skillSection = document.querySelector('#skills');
     const skillLevels = document.querySelectorAll('.skill-level');
 
@@ -154,7 +199,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (sectionPos < screenPos) {
                 skillLevels.forEach(level => {
-                    level.style.width = level.parentElement.dataset.level || '0%';
+                    const targetWidth = level.parentElement.dataset.level || '0%';
+                    level.style.width = targetWidth;
+                    level.style.boxShadow = '0 0 10px rgba(220, 20, 60, 0.6), 0 0 20px rgba(220, 20, 60, 0.3)';
                 });
                 window.removeEventListener('scroll', animateSkills);
             }
@@ -164,86 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
         animateSkills(); // Run once on load
     }
 
-    // Contact Form with validation and AJAX
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', e => {
-            e.preventDefault();
-
-            // Basic form validation
-            const nameInput = document.getElementById('name');
-            const emailInput = document.getElementById('email');
-            const messageInput = document.getElementById('message');
-            
-            const name = nameInput ? nameInput.value.trim() : '';
-            const email = emailInput ? emailInput.value.trim() : '';
-            const message = messageInput ? messageInput.value.trim() : '';
-
-            if (!name || !email || !message) {
-                showFormMessage('Please fill all required fields', 'error');
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-                showFormMessage('Please enter a valid email address', 'error');
-                return;
-            }
-
-            // Display sending state
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-            // Simulate AJAX request (replace with actual API endpoint)
-            setTimeout(() => {
-                showFormMessage('Your message has been sent successfully!', 'success');
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                contactForm.reset();
-            }, 1500);
-        });
-
-        function showFormMessage(message, type) {
-            let messageEl = document.querySelector('.form-message');
-
-            if (!messageEl) {
-                messageEl = document.createElement('div');
-                messageEl.className = 'form-message';
-                contactForm.appendChild(messageEl);
-            }
-
-            messageEl.textContent = message;
-            messageEl.className = `form-message ${type}`;
-
-            setTimeout(() => {
-                messageEl.style.opacity = '0';
-                setTimeout(() => {
-                    messageEl.remove();
-                }, 500);
-            }, 3000);
-        }
-
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-    }
-
-    // Neon Intro Screen: fade out after animation
-    const intro = document.getElementById('intro');
-    if (intro) {
-        setTimeout(() => {
-            intro.style.transition = 'opacity 1s ease';
-            intro.style.opacity = '0';
-            setTimeout(() => {
-                intro.style.display = 'none';
-                document.body.style.overflow = 'visible'; // Enable scrolling
-            }, 1000);
-        }, 3000);
-    }
-
     // Role Word Animation with typewriter effect
-    const words = ['Software Developer', 'UI/UX Designer', 'Problem Solver', 'Student'];
+    const words = ['Software Developer', 'UI/UX Designer', 'Problem Solver', 'Elite Shinobi'];
     let wordIndex = 0;
     let letterIndex = 0;
     let currentWordTyping = true;
@@ -264,352 +233,136 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (letterIndex < currentWord.length) {
                     roleElement.textContent = currentWord.substring(0, letterIndex + 1);
                     letterIndex++;
+                    setTimeout(typeWriter, 50);
                 } else {
                     currentWordTyping = false;
                     setTimeout(typeWriter, 1500); // Pause at the end of word
-                    return;
                 }
             } else {
-                // Deleting the word
+                // Erasing the word
                 if (letterIndex > 0) {
                     roleElement.textContent = currentWord.substring(0, letterIndex - 1);
                     letterIndex--;
+                    setTimeout(typeWriter, 30);
                 } else {
                     currentWordTyping = true;
                     wordIndex = (wordIndex + 1) % words.length;
+                    setTimeout(typeWriter, 500); // Pause before typing next word
                 }
             }
-    
-            // Add glow effect when word is complete
-            if (letterIndex === currentWord.length && roleElement.parentNode) {
-                roleElement.parentNode.classList.add('neon-outline');
-            } else if (roleElement.parentNode) {
-                roleElement.parentNode.classList.remove('neon-outline');
-            }
-    
-            // Adjust speed for typing vs. deleting
-            const speed = currentWordTyping ? Math.random() * 100 + 100 : 50;
-            setTimeout(typeWriter, speed);
         };
     
-        setTimeout(() => {
-            typeWriter();
-        }, 2000);
+        setTimeout(typeWriter, 1000); // Start after a delay
     }
 
-    // Parallax effect for sections
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-
-        // Animate elements on scroll
-        const animateElements = document.querySelectorAll('.animate-on-scroll');
-        animateElements.forEach(element => {
-            const elementPosition = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-
-            if (elementPosition < windowHeight - 100) {
-                element.classList.add('animated');
-            }
-        });
-
-        // Staggered children animations
-        const staggerParents = document.querySelectorAll('.stagger-children');
-        staggerParents.forEach(parent => {
-            const parentPosition = parent.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-
-            if (parentPosition < windowHeight - 100) {
-                parent.classList.add('animated');
-            }
-        });
-    });
-
-    // Initialize project image hover effects
-    const projectImages = document.querySelectorAll('.project-img');
-    projectImages.forEach(image => {
-        const overlay = image.querySelector('.project-overlay');
-        if (overlay) {
-            image.addEventListener('mouseenter', () => {
-                overlay.style.opacity = '1';
-            });
-
-            image.addEventListener('mouseleave', () => {
-                overlay.style.opacity = '0';
-            });
+    // Create floating Akatsuki clouds
+    function createAkatsukiClouds() {
+        const cloudCount = 10;
+        
+        for (let i = 0; i < cloudCount; i++) {
+            const cloud = document.createElement('div');
+            cloud.className = 'akatsuki-cloud';
+            
+            // Random size between 50px and 150px
+            const size = Math.random() * 100 + 50;
+            cloud.style.width = `${size}px`;
+            cloud.style.height = `${size}px`;
+            
+            // Random position
+            cloud.style.left = `${Math.random() * 100}vw`;
+            cloud.style.top = `${Math.random() * 100}vh`;
+            
+            // Random animation duration between 20 and 40 seconds
+            const duration = Math.random() * 20 + 20;
+            cloud.style.animation = `float ${duration}s infinite linear`;
+            
+            // Random delay
+            cloud.style.animationDelay = `${Math.random() * 20}s`;
+            
+            document.body.appendChild(cloud);
         }
-    });
-
-    // Add terminal effect to About section
-    const aboutText = document.querySelector('.about-text p:first-child');
-    if (aboutText) {
-        const originalText = aboutText.textContent;
-        aboutText.innerHTML = '';
-        let i = 0;
-
-        function terminalEffect() {
-            if (i < originalText.length) {
-                aboutText.innerHTML += originalText.charAt(i);
-                i++;
-                setTimeout(terminalEffect, Math.random() * 20 + 10);
-            } else {
-                // Add blinking cursor at the end
-                aboutText.innerHTML += '<span class="terminal-cursor"></span>';
-            }
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    terminalEffect();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(aboutText);
     }
 
-    // Back to Top Button
-    const backToTopBtn = document.querySelector('.back-to-top');
-    if (backToTopBtn) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                backToTopBtn.style.opacity = '1';
-                backToTopBtn.style.pointerEvents = 'all';
-            } else {
-                backToTopBtn.style.opacity = '0';
-                backToTopBtn.style.pointerEvents = 'none';
-            }
+    // Initialize the Akatsuki-themed background
+    function initAkatsukiBackground() {
+        const canvas = document.getElementById('background-canvas');
+        if (!canvas) return;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: true
         });
-    }
-
-    // Lazy Load Images
-    const lazyImages = document.querySelectorAll('img');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                observer.unobserve(img);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-    });
-
-    // Testimonials Carousel
-    const testimonials = document.querySelectorAll('.testimonial-card');
-    
-    if (testimonials.length > 1) {
-        let currentTestimonial = 0;
         
-        // Add active class to first testimonial
-        testimonials[0].classList.add('active');
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
         
-        function showNextTestimonial() {
-            testimonials[currentTestimonial].classList.remove('active');
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            testimonials[currentTestimonial].classList.add('active');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        camera.position.z = 20;
+        
+        // Add lights
+        const ambientLight = new THREE.AmbientLight(0xff0000, 0.1);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xff0000, 0.5);
+        directionalLight.position.set(0, 10, 5);
+        scene.add(directionalLight);
+
+        // Create particles for background
+        const particleCount = 1000;
+        const particles = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        
+        for (let i = 0; i < particleCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 100;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
         }
         
-        setInterval(showNextTestimonial, 5000);
+        particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.2,
+            color: 0xff0000
+        });
+        
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+        
+        // Add floating Akatsuki rings
+        const ringGeometry = new THREE.TorusGeometry(5, 0.2, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        scene.add(ring);
+        
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            
+            // Rotate rings
+            ring.rotation.x += 0.01;
+            ring.rotation.y += 0.01;
+            
+            // Slightly move particles
+            particleSystem.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+        };
+        
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     }
 });
-
-// Three.js 3D Background
-function initThreeJSBackground() {
-    // Create scene
-    const scene = new THREE.Scene();
-
-    // Create camera
-    const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-    );
-    camera.position.z = 5;
-
-    // Create renderer
-    const renderer = new THREE.WebGLRenderer({
-        canvas: document.getElementById('background-canvas'),
-        alpha: true,
-        antialias: true
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    // Create particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 2000;
-
-    // Create positions array
-    const positions = new Float32Array(particleCount * 3);
-
-    // Fill positions array with random values
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 20; // x
-        positions[i + 1] = (Math.random() - 0.5) * 20; // y
-        positions[i + 2] = (Math.random() - 0.5) * 20; // z
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    // Create particle material
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.06,
-        color: 0x00ff41, // Neon green
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
-
-    // Create particle system
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
-
-    // Create lines connecting particles
-    const linesMaterial = new THREE.LineBasicMaterial({
-        color: 0x00ff41,
-        transparent: true,
-        opacity: 0.2
-    });
-
-    const linesGeometry = new THREE.BufferGeometry();
-    const linePositions = [];
-
-    // Create lines between nearby particles
-    for (let i = 0; i < particleCount; i++) {
-        const x1 = positions[i * 3];
-        const y1 = positions[i * 3 + 1];
-        const z1 = positions[i * 3 + 2];
-
-        for (let j = i + 1; j < particleCount; j++) {
-            const x2 = positions[j * 3];
-            const y2 = positions[j * 3 + 1];
-            const z2 = positions[j * 3 + 2];
-
-            const dist = Math.sqrt(
-                Math.pow(x2 - x1, 2) +
-                Math.pow(y2 - y1, 2) +
-                Math.pow(z2 - z1, 2)
-            );
-
-            // Only create lines between particles that are close to each other
-            if (dist < 1.5) {
-                linePositions.push(x1, y1, z1);
-                linePositions.push(x2, y2, z2);
-            }
-        }
-    }
-
-    linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-    const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
-    scene.add(lines);
-
-    // Create floating geometric objects
-    const geometries = [
-        new THREE.TetrahedronGeometry(0.7),
-        new THREE.OctahedronGeometry(0.7),
-        new THREE.IcosahedronGeometry(0.7)
-    ];
-
-    const floatingObjects = [];
-
-    for (let i = 0; i < 8; i++) {
-        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x00ff41,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-
-        const object = new THREE.Mesh(geometry, material);
-
-        // Position objects far from center
-        object.position.set(
-            (Math.random() - 0.5) * 15,
-            (Math.random() - 0.5) * 15,
-            (Math.random() - 0.5) * 15
-        );
-
-        // Random rotation
-        object.rotation.set(
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI
-        );
-
-        // Store rotation and floating speed
-        object.userData = {
-            rotationSpeed: {
-                x: Math.random() * 0.01 - 0.005,
-                y: Math.random() * 0.01 - 0.005,
-                z: Math.random() * 0.01 - 0.005
-            },
-            floatSpeed: Math.random() * 0.005 + 0.002
-        };
-
-        floatingObjects.push(object);
-        scene.add(object);
-    }
-
-    // Create grid for visual effect
-    const gridHelper = new THREE.GridHelper(20, 40, 0x00ff41, 0x00ff41);
-    gridHelper.material.transparent = true;
-    gridHelper.material.opacity = 0.1;
-    gridHelper.position.y = -10;
-    scene.add(gridHelper);
-
-    // Mouse interaction
-    let mouseX = 0;
-    let mouseY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth) - 0.5;
-        mouseY = (e.clientY / window.innerHeight) - 0.5;
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
-
-        // Rotate particles
-        particles.rotation.x += 0.0005;
-        particles.rotation.y += 0.0005;
-
-        // Mouse influence on particles
-        particles.rotation.x += mouseY * 0.001;
-        particles.rotation.y += mouseX * 0.001;
-
-        // Rotate grid
-        gridHelper.rotation.y += 0.001;
-
-        // Animate floating objects
-        floatingObjects.forEach(obj => {
-            obj.rotation.x += obj.userData.rotationSpeed.x;
-            obj.rotation.y += obj.userData.rotationSpeed.y;
-            obj.rotation.z += obj.userData.rotationSpeed.z;
-
-            // Gentle floating movement based on sine wave
-            obj.position.y += Math.sin(Date.now() * obj.userData.floatSpeed) * 0.01;
-        });
-
-        // Render scene
-        renderer.render(scene, camera);
-    }
-
-    animate();
-}
-
